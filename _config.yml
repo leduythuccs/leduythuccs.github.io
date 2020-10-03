@@ -140,7 +140,7 @@ title-separator: "-"
 timezone: "Asia/Ho_Chi_Minh"
 markdown: kramdown
 kramdown:
-   math_engine: nil
+   math_engine: mathjax
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
