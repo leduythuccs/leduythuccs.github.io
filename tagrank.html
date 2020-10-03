@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/problem_link_mapping.js"></script>
+    <script type="text/javascript" src="data/tagging/rank_info.json"></script>
+    <script type="text/javascript" src="data/tagging/handle_info.json"></script>
+    <script type="text/javascript" src="data/tagging/tags_info.json"></script>
+    <script type="text/javascript" src="data/tagging/problems_info.json"></script>
+    <script type="text/javascript" src="data/tagging/users_info.json"></script>
+    <script>
+        function init() {
+            rank_info = JSON.parse(rank_info_json);
+            handle_info = JSON.parse(handle_info_json);
+            tags_info = JSON.parse(tags_info_json);
+            problems_info = JSON.parse(problems_info_json);
+            users_info = JSON.parse(users_info_json);
+            output = document.getElementById("rank");
+            output.textContent = "";
+            list = document.createElement('ol')
+            for (var discord_id in rank_info) {
+                item = document.createElement('li')
+                node = document.createElement("a")
+                node.innerText = handle_info[discord_id] + "(" + rank_info[discord_id] + ")"
+                item.appendChild(node)
+                list.appendChild(item)
+            }
+            output.appendChild(list)
+            myFunction()
+            tagFunction()
+            output = document.getElementById("all_problem");
+            output.textContent = "";
+            for (var problem in problems_info) {
+                contest = problem.split('/')
+                contest_id = contest[0]
+                problem_char = contest[1]
+                link = `https://codeforces.com/contest/${contest_id}/problem/${problem_char}`
+                node = document.createElement("a")
+                node.href = link
+                node.innerText = problem
+                node.target = "_blank"
+                output.appendChild(node)
+                output.appendChild(document.createElement("br"))
+            }
+        }
+        function myFunction() {
+            var tag = document.getElementById("input").value.toLowerCase();
+            output = document.getElementById("output");
+            output.textContent = "";
+            if (!tags_info.includes(tag)) {
+                output.innerHTML = "Không tìm thấy tag `" + tag + "`";
+                return; 
+            }
+            output.innerHTML = "Các bài có tag `" + tag + "`: "; 
+            list = document.createElement('ul')
+            for (var problem in problems_info) {
+                contest = problem.split('/')
+                contest_id = contest[0]
+                problem_char = contest[1]
+                for (var discord_id in problems_info[problem]) { 
+                    if (problems_info[problem][discord_id]['tags'].includes(tag)) {
+                        link = `https://codeforces.com/contest/${contest_id}/problem/${problem_char}`
+                        item = document.createElement('li')
+                        node = document.createElement("a")
+                        node.href = link
+                        node.innerText = problem
+                        node.target = "_blank"
+                        item.appendChild(node)
+                        item.appendChild(document.createTextNode(". Người tag: " + handle_info[discord_id.toString()]))
+                        if (problems_info[problem][discord_id]['tags'].length > 0) {
+                            node = document.createTextNode("Tags: " + problems_info[problem][discord_id]['tags'].join(', '))
+                            item.appendChild(document.createElement("br"))
+                            item.appendChild(node)
+                        }
+                        if (problems_info[problem][discord_id]['comments'].length > 0) {
+                            item.appendChild(document.createElement("br"))
+                            node = document.createTextNode("Comments: " + problems_info[problem][discord_id]['comments'].join(', '))
+                            item.appendChild(node)
+                        }
+                        list.appendChild(item)
+                    }
+                }
+            }
+            output.appendChild(list)
+        }
+        function parse_link(link) {
+            p1 = /problemset\/problem\/(\d+)\/(\w+)/
+            p2 = /contest\/(\d+)\/problem\/(\w+)/
+            p3 = /(\d+)([A-Z]+[0-9]*)/
+            if (link.match(p1) != null)
+                return link.match(p1)[1] + '/' + link.match(p1)[2] 
+            if (link.match(p2) != null)
+                return link.match(p2)[1] + '/' + link.match(p2)[2] 
+            if (link.match(p3) != null)
+                return link.match(p3)[1] + '/' + link.match(p3)[2] 
+            return null
+        }
+        function tagFunction() {
+            var link = document.getElementById("tag_input").value;
+            output = document.getElementById("tag_output");
+            output.textContent = "";
+            problem = parse_link(link)
+            if (problem == null) {
+                output.textContent = "Link không hợp lệ";
+                return;
+            }
+            contest = problem.split('/')
+            contest_id = contest[0]
+            problem_char = contest[1]
+            link = `https://codeforces.com/contest/${contest_id}/problem/${problem_char}`
+            if (!(problem in problems_info)) {
+                output.textContent = "Không tìm thấy tag của bài ";
+                node = document.createElement("a")
+                node.href = link
+                node.innerText = problem
+                node.target = "_blank"
+                output.appendChild(node)
+                return;
+            } 
+            list = document.createElement('ul')
+            node = document.createElement("a")
+            
+            node.href = link
+            node.innerText = problem
+            node.target = "_blank"
+            output.innerHTML = "Tag của bài "
+            output.appendChild(node)
+            output.innerHTML += ":"
+            for (var discord_id in problems_info[problem]) { 
+                link = `https://codeforces.com/contest/${contest_id}/problem/${problem_char}`
+                item = document.createElement('li')
+                item.appendChild(document.createTextNode("Người tag: " + handle_info[discord_id.toString()]))
+                if (problems_info[problem][discord_id]['tags'].length > 0) {
+                    node = document.createTextNode("Tags: " + problems_info[problem][discord_id]['tags'].join(', '))
+                    item.appendChild(document.createElement("br"))
+                    item.appendChild(node)
+                }
+                if (problems_info[problem][discord_id]['comments'].length > 0) {
+                    item.appendChild(document.createElement("br"))
+                    node = document.createTextNode("Comments: " + problems_info[problem][discord_id]['comments'].join(', '))
+                    item.appendChild(node)
+                }
+                list.appendChild(item)
+            }
+            output.appendChild(list)
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+    
+    <p>
+        Trang web được cập nhật lần cuối lúc 10h35AM (UTC+7) 15.05.2020 </br>
+        Nhập tag vào ô ở dưới 
+    </p>
+    <div style="float:left;width:calc(30% - 5px);" >
+        <input id= "input" oninput="myFunction()" value = "trie"  >  </input>
+        <div id = "output"> 
+        </div>
+    </div>
+    <div id = "tag" style="float:left;width:calc(30% - 5px)"> 
+        <input id= "tag_input" oninput="tagFunction()" value = "888G"  >  </input>
+        <div id = "tag_output"> 
+        </div>
+        <div id = "all_problem"> 
+        </div>
+    </div>
+    <div id = "rank" style="float:left;width:calc(30% - 5px)"> 
+        <p>ahihi</p>
+    </div>
+    <!-- <p>
+        Các bạn cần vào group <a href="https://codeforces.com/group/FLVn1Sc504" target="_blank" > https://codeforces.com/group/FLVn1Sc504 </a> 
+        trước để có thể vào được link, xem hướng dẫn ở <a href="https://www.facebook.com/groups/VNOIForum/permalink/1657908650896629/" target="_blank"> đây </a>
+        <br>
+        Nếu đề bài có vấn đề gì, các bạn có thể điền vào sheet này: <a href="https://bit.ly/2R4huMT" target="_blank">https://bit.ly/2R4huMT</a>
+    </p>
+    <p>
+        :3 Nếu được, các bạn hãy star cái repo này giúp mình nhé :3 Đây là con bot mình viết để giúp mình trong việc chuyển bài từ VOJ sang codeforces :3
+        <a href="https://github.com/leduythuccs/VOJ-rebuild-discord-bot" target="_blank"> https://github.com/leduythuccs/VOJ-rebuild-discord-bot </a>
+    </p> -->
+</body>
+
+</html>

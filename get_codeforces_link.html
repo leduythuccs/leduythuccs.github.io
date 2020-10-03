@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/problem_link_mapping.js"></script>
+    <script>
+        function myFunction() {
+            var data = document.getElementById("input").value.toUpperCase();
+            output = document.getElementById("output");
+            output.textContent = "";
+            if (data in problems) {
+                output.innerHTML = "Các link tới bài " + data + ": ";
+                output.appendChild(document.createElement('br'))
+                contests = problems[data].split(",");
+                console.log(contests)
+                list = document.createElement('ul')
+                item = document.createElement('li')
+                item.innerHTML +=  " Link VNOI: "
+                node = document.createElement("a")
+                node.href = `https://vnoi.info/codeforces/${data}`
+                node.innerText = `https://vnoi.info/codeforces/${data}`
+                node.target = "_blank"
+                item.appendChild(node)
+                list.appendChild(item)
+                for (i = 0; i < contests.length; ++i) {
+                    contest = contests[i].split('/')
+                    contest_id = contest[0]
+                    problem_char = contest[1]
+                    name = contest_name[contest_id]
+                    link = `https://codeforces.com/group/FLVn1Sc504/contest/${contest_id}/problem/${problem_char}`
+                    item = document.createElement('li')
+                    item.innerHTML += name + ": "
+                    node = document.createElement("a")
+                    node.href = link
+                    node.innerText = link
+                    node.target = "_blank"
+                    console.log(node)
+                    item.appendChild(node)
+                    list.appendChild(item)
+                    
+                }
+                output.appendChild(list)
+                
+            }
+            else 
+                output.textContent = "problem " + data + " not found.";
+        }
+        
+
+    </script>
+</head>
+
+<body onload = "myFunction()">
+    
+    <p>
+        Lưu ý: hiện tại các bạn có thể vào <a href="https://vnoi.info/problems/list/" target="_blank" > https://vnoi.info/problems/list/ </a> để lấy link bài codeforces, có phân loại tag <br>
+        Hoặc có thể dùng <a href="https://vnoi.info/codeforces/aznet" target="_blank" > https://vnoi.info/codeforces/aznet </a> để trực tiếp tới link bài
+    </p>
+    <input id= "input" oninput="myFunction()" value = "aZnEt">  </input>
+    <div id = "output"> 
+    </div>
+    <p>
+        Các bạn cần vào group <a href="https://codeforces.com/group/FLVn1Sc504" target="_blank" > https://codeforces.com/group/FLVn1Sc504 </a> 
+        trước để có thể vào được link, xem hướng dẫn ở <a href="https://www.facebook.com/groups/VNOIForum/permalink/1657908650896629/" target="_blank"> đây </a>
+        <br>
+        Nếu đề bài có vấn đề gì, các bạn có thể comment vào post này <a href="https://www.facebook.com/groups/VNOIForum/permalink/3065138366840310/" target="_blank">https://www.facebook.com/groups/VNOIForum/permalink/3065138366840310/</a>
+    </p>
+    <p>
+        :3 Nếu được, các bạn hãy star cái repo này giúp mình nhé :3 Đây là con bot mình viết để giúp mình trong việc chuyển bài từ VOJ sang codeforces :3
+        <a href="https://github.com/leduythuccs/VOJ-rebuild-discord-bot" target="_blank"> https://github.com/leduythuccs/VOJ-rebuild-discord-bot </a>
+    </p>
+</body>
+
+</html>

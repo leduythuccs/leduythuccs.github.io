@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/katex.min.css">
+    <link rel="stylesheet" href="css/style_diff.css"/>
+    <script src="js/katex.min.js" ></script>
+    <script src="js/diff.js"></script>
+    <script src="js/clipboard.min.js"></script>
+    <script>
+        function katex_show() {
+            // var tex = $(this).text();
+            let data = document.getElementById("latex_output").value;
+            data = data.replace(/\$([^\$]+)\$/g, (...match) => {
+                s = "";
+                try {
+                    s = katex.renderToString(match[1], {displayMode: false});
+                }
+                catch(err) {
+                    s = "LATEX_ERROR";
+                    console.log(err.message);
+                }
+                return s;
+            });
+            data = data.replace(/\n/g, '<br/>')
+            document.getElementById("katex_output").innerHTML = data;
+        }
+        function remove_textbf(data) {
+            data = data.replace(/\\textbf{/g, '\1')
+            var text = ""
+            var cnt = 0;
+            for (var i in data) {
+                c = data[i]
+                if (c == '\1')
+                    continue;
+                if (c == '{') ++cnt;
+                if (c == '}') {
+                    if (cnt == 0)
+                        continue;
+                    --cnt;
+                }
+                text += c
+            }
+            return text;
+        }
+        function fix_latex(data) {
+            advanced_mode = document.getElementById("advanced_mode").checked;
+            item_mode = document.getElementById("item_mode").checked;
+            data = ' ' + data + ' '
+            data = data.normalize("NFKD")
+            data = data.replace(/\r/g,'')
+            data = data.replace(/\$(\s*)(.+?)(\s*)\$/g, '$$$2$$')
+            // xi -> x_i
+            if (advanced_mode == true) {
+                data = data.replace(/ /g, '  ')
+                data = data.replace(/([\( \n,\.:;])([a-zA-Z])([\dijk])([\) \n,\.:;])/g, '$1$$$2_$3$$$4')
+                data = data.replace(/(\w)\[([^\[]*?)\]/g, '$$$1_{$2}$$')
+                //do it again to catch pattern a[p[i]]
+                data = data.replace(/(\w)\[([^\[]*?)\]/g, '$$$1_{$2}$$')
+            }
+            // # add space after punctuation
+            data = data.replace(/([,\?!;:])/g, '$1 ')
+            // remove all \textbf{s}
+            data = remove_textbf(data)
+            // data = data.replace(/\\textbf\{(.+?)\}/g, ' $1 ')
+            
+            data = data.replace(/•/g, '\\item ')
+            // # remove continuous space
+            data = data.replace(/ +/g, ' ')
+            // # remove space before punctuation
+            data = data.replace(/\s+([,\.\?!;:])/g, '$1')
+            
+            // # remove space after ([
+            data = data.replace(/([\(\[])\s+/g,'$1')
+            // # remove space before )]
+            data = data.replace(/\s+([\)\]])/g,'$1')
+            
+            //replace x^y -> x^{y}
+            data = data.replace(/(\w+)\^(\w+)/g, '$$$1^\{$2}$$')
+            
+            //replace * -> \times
+            data = data.replace(/\*/g, ' $$\\times$$ ')
+            //replace × -> \times
+            data = data.replace(/×/g, ' $$\\times$$ ')
+
+            // # replace 1ex -> 10^{x}
+            data = data.replace(/(\D)1e(\d+)/g, '$1$$10^{$2}$$')
+            // # replace xey -> x * 10^{y}
+            data = data.replace(/(\d+)e(\d+)/g, '$$$1 \\times 10^{$2}$$')
+
+            // # remove space in the end of line
+            data = data.replace(/ +\n/g, '\n')
+            // # remove space in the beginning of line
+            data = data.replace(/\n +/g, '\n')
+            
+            data = data.replace(/->/g, '$$\\rightarrow$$')
+            data = data.replace(/=>/g, '$$\\rightarrow$$')
+            data = data.replace(/≤/g, ' $$\\leq$$ ')
+            data = data.replace(/<=/g, ' $$\\leq$$ ')
+            data = data.replace(/≠/g, ' $$\\neq$$ ')
+            data = data.replace(/≥/g, ' $$\\geq$$ ')
+            data = data.replace(/>=/g, ' $$\\geq$$ ')
+            data = data.replace(/=/g, ' $$=$$ ')
+            data = data.replace(/π/g, ' $$\\pi$$ ')
+            data = data.replace(/\.\.\.\./g, ' \\dots ')
+            data = data.replace(/\.\.\./g, ' \\dots ')
+            data = data.replace(/\.\./g, ' \\dots ')
+            data = data.replace(/\+/g, ' $$+$$ ')
+            // data = data.replace(/-/g, ' $$-$$ ')
+            
+            
+            // left = '[\(\) \n,\.:;]'
+            // # replace number by $number$ 
+            data = data.replace(/([\(\[ \n,:;])(\d+)([\)\] \n,:;]|\.\D)/g, '$1$$$2$$$3')
+            // # replace single charractor x by $x$
+            data = data.replace(/([\(\[ \n,:;])(\w)([\)\] \n,:;])/g, '$1$$$2$$$3')
+            // doing it again to make sure everything is ok
+            // # replace numer\% by $number\%$
+            data = data.replace(/([\(\[ \n,:;])(\d+)\\%([\)\] \n,:;])/g, '$1$$$2\\%$$$3')
+            data = data.replace(/([\(\[ \n,:;])(\d+)%([\)\] \n,:;])/g, '$1$$$2\\%$$$3')
+            // # replace number by $number$ 
+            data = data.replace(/([\(\[ \n,:;])(\d+)([\)\] \n,:;]|\.\D)/g, '$1$$$2$$$3')
+            // # replace negative -number by $-number$
+            data = data.replace(/([\(\[ \n,:;])(-\d+)([\)\] \n,:;]|\.\D)/g, '$1$$$2$$$3')
+            // # replace single charractor x by $x$
+            data = data.replace(/([\(\[ \n,\.:;])([a-zA-Z])([\)\] \n,\.:;])/g, '$1$$$2$$$3')
+
+            // # add space before and after $
+            data = data.replace(/\$/g, ' $$ ')
+            // # remove continuous space again
+            data = data.replace(/ +/g, ' ')
+            // # replace $space$ to space
+            data = data.replace(/\$ +\$( \W)/g, ' $1')
+            data = data.replace(/(\W |leq |neq |geq |times |le |ge |rightarrow |dots )\$ +\$/g, '$1 ')
+            // # replce $ x $ to $x$
+            data = data.replace(/\$\s+([^\$]+)\s+\$/g, '$$$1$$')
+            // # add space after punctuation (again)
+            data = data.replace(/([,\?!;:])/g, '$1 ')
+            data = data.replace(/(\D)\.(\D)/g,'$1. $2')
+            // # remove continuous space again
+            data = data.replace(/ +/g, ' ')
+            // # remove space before punctuation (again)
+            data = data.replace(/\s+([,\.\?!;:])/g, '$1')
+
+            // # remove space after ([ (again)
+            data = data.replace(/([\(\[])\s+/g,'$1')
+            // # remove space before )] (again)
+            data = data.replace(/\s+([\)\]])/g,'$1')
+            data = data.replace(/ +/g, ' ')
+            // # remove space in the end of line (again)
+            data = data.replace(/ +\n/g, '\n')
+            // # remove space in the beginning of line (again)
+            data = data.replace(/\n +/g, '\n')
+            // # replace ($ by $(
+            data = data.replace(/([\(\[])\$/g, '$$$1')
+            // # replace $) by )$
+            data = data.replace(/\$([\)\]])/g, '$1$$')
+            // # replace A$[ -> $A[
+            data = data.replace(/([a-zA-Z]+)\$([\[\(])/g,'$$$1$2')
+            // # replace ($ by $(
+            data = data.replace(/([\(\[])\$/g, '$$$1')
+            // # replace $) by )$
+            data = data.replace(/\$([\)\]])/g, '$1$$')
+            // # replace A$[ -> $A[
+            data = data.replace(/([a-zA-Z]+)\$([\[\(])/g,'$$$1$2')
+            
+            // // $, $ -> ,
+            // data = data.replace(/\$, \$/g, ', ')
+
+            data = data.trim();
+            if (item_mode) {
+                data = data.replace(/\n\n/g, '\n')
+                data = data.replace(/\n\n/g, '\n')
+                data = data.replace(/\n/g, '\n\\item ')
+                data = "\\begin{itemize}\n\\item " + data + "\n\\end{itemize}"
+            }
+            return data
+        }
+        function myFunction() {
+            let data = document.getElementById("latex_input").value;
+            data = data.normalize("NFKD")
+            new_data = fix_latex(data)
+            document.getElementById("latex_output").value = new_data;
+            changed(data, new_data);
+        }
+        function clear_input() {
+            document.getElementById("latex_input").value = ""
+        }
+        function changed(old_data, new_data) {
+            var diff = JsDiff.diffChars(old_data, new_data),
+                display = document.getElementById('diff_output'),
+                fragment = document.createDocumentFragment();
+
+            for (var i=0; i < diff.length; i++) {
+                if (diff[i].added && diff[i + 1] && diff[i + 1].removed) {
+                    var swap = diff[i];
+                    diff[i] = diff[i + 1];
+                    diff[i + 1] = swap;
+                }
+                var node;
+                if (diff[i].removed) {
+                    node = document.createElement('del');
+                    node.appendChild(document.createTextNode(diff[i].value));
+                } else if (diff[i].added) {
+                    node = document.createElement('ins');
+                    node.appendChild(document.createTextNode(diff[i].value));
+                } else {
+                    node = document.createTextNode(diff[i].value);
+                }
+                fragment.appendChild(node);
+            }
+            display.textContent = '';
+            display.appendChild(fragment);
+        }
+
+    </script>
+</head>
+
+<body onload = "myFunction()">
+    
+    <p> 
+        Một số quy tắc khi viết, chỉnh sửa đề: <br/>
+        <ul>
+            <li> Sau dấu câu thì không space, sau dấu ( trước dấu ) không có space.</li>
+            <li> Xuống dòng ở latex thì phải enter 2 lần.</li>
+            <li> các dấu &lt;= nên thay bằng \leq,  >= thì là \geq. dấu &lt; hay > có thể gõ luôn </li>
+            <li> nên bỏ tất cả các biến vào $ $, ví dụ $n$, $i$. </li>
+            <li> Tên biến dùng thống nhất, ví dụ đã dùng $N$ thì nên $N$ luôn, đừng $N$ rồi $n$, trừ khi là 2 biến khác nhau. </li>
+            <li> <a href="http://bit.ly/2TLaJBC" target="_blank">rule viết đề trên polygon</a> </li>
+        </ul>
+    </p>
+    <p>
+        Các bạn khi làm bài, nên thường xuyên update trạng thái ở sheet 
+        <a href="https://bit.ly/38vxVaU" target="_blank"> phân công </a> và
+        <a href="http://bit.ly/2IJYeQz" target="_blank"> trạng thái các bài </a>
+        <br/>
+        Nếu gặp vấn đề gì khi làm, các bạn có thể note vào 
+        <a href="https://bit.ly/3cIIScT" target="_blank"> vấn đề </a>
+    </p>
+    Advanced Mode: <input type="checkbox" id="advanced_mode" onchange="myFunction()"> Nếu check, các pattern như xi, ai, vi, x[i], a[m] sẽ được đổi thành x_i, a_i, v_i, a_m, a_n </br>. 
+    Cẩn thận khi dùng nó, vì nó có thể chuyển mấy cái như "di chuyển" thành "$d_i$ chuyển".
+    <br/>
+    Item mode<input type = "checkbox" id="item_mode" onchange="myFunction()">
+    <br/>
+    <script>new ClipboardJS('.btn');</script>
+    <button class="btn" onclick = "clear_input()" data-clipboard-target="#latex_output">Copy output & clear input</button>
+    <br/>
+    <textarea id="latex_input" rows="15" cols="90" oninput="myFunction()">
+Các bạn nên dùng cái này trước khi chỉnh sửa, với cả cẩn thận mấy cái dấu đô có sẵn nha :'(. Cứ gõ, paste vào đây là nó tự chuyển.
+supported:
+
+1e9 -> 10^9
+2e18 -> 2 * 10^18
+x1 -> x_1 (advanced_mode)
+xk -> x_k (advanced_mode)
+xi -> x_i (advanced_mode)
+xj -> x_j (advanced_mode)
+a[i] -> a_i (advanced_mode)
+xu -> xu (giữ nguyên trong advanced_mode)
+a ≤ b
+a &lt;= b
+a ≠ b
+a ≥ b
+a >= b
+Trước dấu câu không có space .
+Sau dấu câu ,phải có space
+Dòng thứ nhất ghi số N là số điểm có thể đặt góc lâu đài.( 1 ≤ N ≤ 5000 )
+
+    N dòng sau ghi 2*N số nguyên là tọa độ N điểm có thể đặt góc lâu đài. ( Tọa độ của các điểm là các số nguyên có giá trị tuyệt đối nhỏ hơn 2^31 )</textarea>
+    <textarea id="latex_output" rows="15" cols="90"> </textarea>
+    <br/>
+    <button id = "katex_btn" onclick="katex_show()"> Click to view latex</button>
+    <td><pre id="diff_output"></pre></td>
+    <br/>
+    <hr/>
+    <div id="katex_output">
+
+    </div>
+    <br/>
+
+</body>
+
+</html>
