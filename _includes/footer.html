@@ -1,18 +1,4 @@
 <footer>
-  <!-- Parse the Latex divs with Katex-->
-  <script type="text/javascript">
-    $("script[type='math/tex']").replaceWith(
-      function(){
-        var tex = $(this).text();
-        return katex.renderToString(tex, {displayMode: false});
-    });
-
-    $("script[type='math/tex; mode=display']").replaceWith(
-      function(){
-        var tex = $(this).text();
-        return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
-    });
-  </script>
   <div class="container beautiful-jekyll-footer">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
