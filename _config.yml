@@ -139,8 +139,8 @@ title-separator: "-"
 # Output options (more information on Jekyll's site)
 timezone: "Asia/Ho_Chi_Minh"
 markdown: kramdown
-# kramdown:
-#    math_engine: katex
+kramdown:
+   math_engine: nil
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
