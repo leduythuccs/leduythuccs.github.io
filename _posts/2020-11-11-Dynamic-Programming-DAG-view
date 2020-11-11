@@ -1,0 +1,26 @@
+---
+published: false
+layout: post
+date: '2020-11-11'
+tags:
+  - CP
+  - DP
+image: /img/segmentTree.png
+---
+Xin chào, hôm nay chợt có một tối rảnh nên cũng ngồi suy nghĩ nên làm gì, chợt có bé khoá dưới nhờ mình viết tin tuyển cho trường c3 nên cũng cố viết ra cái blog này.
+
+Bài blog này mình muốn giới thiệu cho mọi người một cái nhìn khác về Quy Hoạch Động (QHĐ, Dynamic Programming, DP) mà theo mình thấy là nó giúp những bạn mới tìm hiểu về nó có thể tiếp cận dễ dàng hơn. Bài này không dành cho một bạn chưa biết gì về QHĐ, nó dành cho những bạn đã biết QHĐ là gì nhưng vẫn cảm thấy khó hiểu hoặc là chưa quen việc nghĩ công thức quy hoạch động.
+
+Cách hiểu hôm nay mình muốn giới thiệu đó là nhìn một bài toán QHĐ giống như một đồ thị **có hướng** và **không** chu trình (còn gọi là DAG). Cách hiểu này mình nhận ra lâu rồi nhưng chưa áp dụng để đem đi dạy bao giờ, nhưng đợt trước anh Mofk có nói dùng cái hiểu này đem đi dạy thì có hiệu quả khá tốt, mình thử và thấy đúng thật. Đội ơn anh Mofk.
+
+Bắt đầu thôi.
+
+## Bài toán 1: Fibonacci
+
+Bài toán này khá là kinh điển rồi. Dãy số Fibonacci được định nghĩa như sau:
+
+$$F_i= \begin{cases} i, \text{if} \space i\le1 \\ F_{i-1}+F_{i-2}, \text{if} \space i\ge 2 \end{cases}$$
+
+Cho một đồ thị có hướng gồm $$n$$ đỉnh, các đỉnh đánh số từ $$1$$ đến $$n$$ và có các cạnh có dạng: $$(i, i - 1)$$, $$(i, i - 2)$$ (ngoại trừ đỉnh 1 không có cạnh nào, và đỉnh 2 chỉ có cạnh nối tới đỉnh 1).
+
+Yêu cầu: Đếm số đường đi bắt đầu từ đỉnh $$n$$ và kết thúc tại đỉnh $$n$$.
