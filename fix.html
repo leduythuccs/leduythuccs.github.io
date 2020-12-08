@@ -47,7 +47,7 @@
             advanced_mode = document.getElementById("advanced_mode").checked;
             item_mode = document.getElementById("item_mode").checked;
             data = ' ' + data + ' '
-            data = data.normalize("NFKD")
+            data = data.normalize("NFKC")
             data = data.replace(/\r/g,'')
             data = data.replace(/\$(\s*)(.+?)(\s*)\$/g, '$$$2$$')
             // xi -> x_i
@@ -178,7 +178,7 @@
         }
         function myFunction() {
             let data = document.getElementById("latex_input").value;
-            data = data.normalize("NFKD")
+            data = data.normalize("NFKC")
             new_data = fix_latex(data)
             document.getElementById("latex_output").value = new_data;
             changed(data, new_data);

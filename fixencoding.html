@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="js/clipboard.min.js"></script>
+    <script>
+        
+        function myFunction() {
+            let data = document.getElementById("latex_input").value;
+            data = data.normalize("NFKC")
+            document.getElementById("latex_output").value = data;
+        }
+
+    </script>
+</head>
+
+<body onload = "myFunction()">
+    <script>new ClipboardJS('.btn');</script>
+    <button class="btn" onclick = "clear_input()" data-clipboard-target="#latex_output">Copy output & clear input</button>
+    <br/>
+    <textarea id="latex_input" rows="15" cols="90" oninput="myFunction()">
+Các bạn nên dùng cái này trước khi chỉnh sửa, với cả cẩn thận mấy cái dấu đô có sẵn nha :'(. Cứ gõ, paste vào đây là nó tự chuyển.
+supported:
+
+1e9 -> 10^9
+2e18 -> 2 * 10^18
+x1 -> x_1 (advanced_mode)
+xk -> x_k (advanced_mode)
+xi -> x_i (advanced_mode)
+xj -> x_j (advanced_mode)
+a[i] -> a_i (advanced_mode)
+xu -> xu (giữ nguyên trong advanced_mode)
+a ≤ b
+a &lt;= b
+a ≠ b
+a ≥ b
+a >= b
+Trước dấu câu không có space .
+Sau dấu câu ,phải có space
+Dòng thứ nhất ghi số N là số điểm có thể đặt góc lâu đài.( 1 ≤ N ≤ 5000 )
+
+    N dòng sau ghi 2*N số nguyên là tọa độ N điểm có thể đặt góc lâu đài. ( Tọa độ của các điểm là các số nguyên có giá trị tuyệt đối nhỏ hơn 2^31 )</textarea>
+    <textarea id="latex_output" rows="15" cols="90"> </textarea>
+    <br/>
+    <br/>
+
+</body>
+
+</html>
