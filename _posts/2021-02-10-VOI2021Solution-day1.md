@@ -17,7 +17,7 @@ Các bạn có thể xem video lời giải của VNOI ở [đây](https://fb.wa
 
 ### Tóm tắt
 
-Cho một hoán vị $$a$$ gồm $$n$$ phần tử. Cần chọn ra $$b$$ là dãy con của $$a$$ gồm $$2 \times m$$ số sao cho $$\midb[i] - b[i + m]\mid \le D, \forall 1 \le i \le m$$ và $$m$$ lớn nhất.
+Cho một hoán vị $$a$$ gồm $$n$$ phần tử. Cần chọn ra $$b$$ là dãy con của $$a$$ gồm $$2 \times m$$ số sao cho $$\lvert b[i] - b[i + m] \rvert \le D, \forall 1 \le i \le m$$ và $$m$$ lớn nhất.
 
 Lưu ý: $$1 \le D \le 5$$
 ### Lời giải
@@ -32,8 +32,8 @@ Việc chọn ra dãy $$b$$ độ dài $$2 \times m$$ cũng giống như là vi�
 
 Khi tới đây, nhiều bạn nghĩ tới bài này là 1 bài quy hoạch động cơ bản giống như bài tìm dãy con chung dài nhất (khi $$D = 0$$ thì đúng là nhìn giống thật), và ra một công thức quy hoạch động kiểu: $$F[i][j]$$ là "dãy con chung" dài nhất khi xét tới vị trí $$i, j$$ của mảng $$a$$, cách làm như sau:
 
-$$F[i][j] = \begin{cases} max(F[i - 1][j], F[i][j - 1]), \text{if} \space \mida[i] - a[j]\mid > D \\
-F[i - 1][j - 1] + 1, \text{if} \space \mida[i] - a[j]\mid \le D \end{cases}$$
+$$F[i][j] = \begin{cases} max(F[i - 1][j], F[i][j - 1]), \text{if} \space \lvert a[i] - a[j] \rvert > D \\
+F[i - 1][j - 1] + 1, \text{if} \space \lvert a[i] - a[j] \rvert \le D \end{cases}$$
 
 Độ phức tạp của thuật toán này là $$O(n^2)$$. 
 
@@ -54,14 +54,14 @@ Xem lại 2 bước trên, bước 1 rất khó để tối ưu xuống, do đó
 
 Nhìn kỹ lại công thức QHĐ: 
 
-$$F[i][j] = \begin{cases} max(F[i - 1][j], F[i][j - 1]), \text{if} \space \mida[i] - a[j]\mid > D \\
-F[i - 1][j - 1] + 1, \text{if} \space \mida[i] - a[j]\mid \le D \end{cases}$$
+$$F[i][j] = \begin{cases} max(F[i - 1][j], F[i][j - 1]), \text{if} \space \lvert a[i] - a[j] \rvert > D \\
+F[i - 1][j - 1] + 1, \text{if} \space \lvert a[i] - a[j] \rvert \le D \end{cases}$$
 
-Ta có thể thấy với mỗi $$i$$, chỉ có nhiều nhất $$2 * D$$ chỉ số $$j$$ thoả mãn $$\mida[i] - a[j]\mid \le D$$ (vì $$a$$ là hoán vị). Ta sẽ tận dụng điều này để tối ưu thuật toán. 
+Ta có thể thấy với mỗi $$i$$, chỉ có nhiều nhất $$2 * D$$ chỉ số $$j$$ thoả mãn $$\lvert a[i] - a[j] \rvert \le D$$ (vì $$a$$ là hoán vị). Ta sẽ tận dụng điều này để tối ưu thuật toán. 
 
 Ta nhìn vào test này, với $$D=1$$
 
-Dãy $$a$$: $$[1, 5, 3, 7, 2, 8, 6, 4]$$. Giả sử ta phân dãy $$a$$ ra thành: $$[1, 5, 3, 7 \mid 2, 8, 6, 4]$$ thì:
+Dãy $$a$$: $$[1, 5, 3, 7, 2, 8, 6, 4]$$. Giả sử ta phân dãy $$a$$ ra thành: $$[1, 5, 3, 7 | 2, 8, 6, 4]$$ thì:
 
 - Số 1 có thể ghép được với số 2 (ở vị trí 5)
 - Số 5 có thể ghép được với số 6, 4 (ở vị trí 7, 8)
@@ -76,13 +76,13 @@ Bài toán này thì liên quan gì tới bài toán cũ của chúng ta?
 
 Với mỗi số bên trái, sẽ có một số vị trí bên phải (không quá $$2\times D$$) có thể ghép được với số đó, thì ta xem các vị trí này là thành một "đoạn". Ví dụ vẫn với cách phân dãy $$a$$ trên, thì mảng gồm các đoạn là: 
 
-$$[5 \,\mid\, 7, 8 \,\mid\, 5, 8 \,\mid\, 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
+$$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
 
 Tới đây, việc chọn các cặp số (1, 2), (5, 6) và (3, 4) từ dãy $$a$$ (ứng với vị trí 5, 7, 8 ở bên phải) cũng ứng với  dãy con tăng ở mảng trên và thoả điều kiện mỗi đoạn chỉ được chọn nhiều nhất 1 số. 
 
 Vậy làm sao để giải quyết bài toán tìm dãy con tăng của mảng có nhiều đoạn, mà mỗi đoạn không được chọn nhiều số? Liệu với thuật toán tìm dãy con tăng mà ta thường dùng, có cách nào để đảm bảo việc mỗi đoạn chỉ chọn nhiều nhất 1 số hay không? Câu trả lời là có, và cách làm là: ở mỗi đoạn, ta sắp xếp các phần tử trong đoạn **giảm dần**, sau đó chỉ cần áp dụng thuật toán tìm dãy con tăng cơ bản là được.
 
-Ví dụ: thay vì ta lưu mảng là $$[5 \,\mid\, 7, 8 \,\mid\, 5, 8 \,\mid\, 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 \,\mid\, 8, 7 \,\mid\, 8, 5 \,\mid\, 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
+Ví dụ: thay vì ta lưu mảng là $$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 \,|\, 8, 7 \,|\, 8, 5 \,|\, 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
 
 Tại sao cái này đúng? Bởi vì ta đang tìm dãy con **tăng**, khi mà mỗi đoạn ta sắp xếp giảm dần thì rõ ràng không thể chọn 2 phần tử của 1 đoạn được vì nó sẽ tạo thành dãy **giảm**. 
 
@@ -245,7 +245,7 @@ Bài này mình thấy cài thuật AC còn dễ và ngắn hơn cài thuật tr
 
 Cho một dãy $$a$$ gồm $$n$$ phần tử. Đếm số cách chọn một dãy con $$b$$ của $$a$$ có $$K$$ phần tử sao cho tổng or của dãy con đó chia hết cho 3, và nằm trong đoạn từ $$L$$ tới $$R$$. Nói cách khác:
 
-- $$v = b[1] \mid b[2] \mid \dots \mid b[K]$$ 
+- $$v = b[1] | b[2] | \dots | b[K]$$ 
 - $$L \le v \le R$$
 - $$v \pmod 3 = 0$$
 
@@ -325,7 +325,7 @@ Tới đây, ta không chỉ tính 1 kết quả cho $$L$$ nữa, mà ta cần t
 
 Bước cải tiến này tập trung vào bước 3 của thuật toán, ta làm như sau: sau khi tính được mảng $$f$$ ở bước 2, ta thân thêm hệ số 1/-1 vào f[i]. Nếu $$i$$ có lẻ bit thì ta nhân 1, nếu $$i$$ có chẵn bit 1 thì ta nhân $$-1$$. 
 
-Sau đó tính DP SOS của mảng $$f$$, tạm gọi mảng được tính là $$g$$. Lúc này, $$\midg[i]\mid$$ đúng bằng số lượng tập con có $$k$$ phần tử có tổng or đúng bằng $$i$$.
+Sau đó tính DP SOS của mảng $$f$$, tạm gọi mảng được tính là $$g$$. Lúc này, $$\lvert g[i] \rvert$$ đúng bằng số lượng tập con có $$k$$ phần tử có tổng or đúng bằng $$i$$.
 
 Tóm lại, ta có các bước sau:
 1. Tính mảng $$cnt$$ bằng DP SOS ($$O(2^{nBit} \times nBit)$$)
