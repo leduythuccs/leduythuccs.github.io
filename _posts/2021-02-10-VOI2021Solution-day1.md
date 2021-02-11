@@ -7,10 +7,11 @@ tags:
   - CP
   - VOI
 ---
-Đề thi ngày 1: [PDF](/data/VOI2021/VOI2021_day_1.pdf), nguồn ảnh mình lấy của bạn Trí ở trong Discord của VNOI.
+Đề thi ngày 1: [PDF](/data/VOI2021/VOI2021_day_1.pdf).
 
 Các bạn có thể xem video lời giải của VNOI ở [đây](https://fb.watch/3zzQGGddKi/). 
 
+Nguồn đề mình lấy của bạn Trí Phan ở trong Discord của VNOI.
 ## Bài 1: NOEL
 
 - Tag: DP LIS
