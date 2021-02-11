@@ -45,7 +45,7 @@ Vậy tới đây ta phải làm sao? Đơn giản thôi, ta chia dãy $$a$$ ra 
 
 Với subtask này, việc dùng thuật toán vừa trình bày ở trên sẽ không khả thi, thuật toán trên gồm 2 bước:
 
-1. Chia dãy $$a$$ ra làm 2 dãy trái phải (có $O(n)$ cách chia) 
+1. Chia dãy $$a$$ ra làm 2 dãy trái phải (có $$O(n)$$ cách chia) 
 2. Với mỗi cách chia, ta phải quy hoạch động trong $$O(n^2)$$
 
 Ta có thể thấy thuật toán trên **chưa tận dụng** được điều kiện của đề bài: **$$D$$ nhỏ**, do đó ta có thể nghĩ tới một hướng tối ưu mà có tận dụng tới điều kiện trên.
@@ -76,13 +76,13 @@ Bài toán này thì liên quan gì tới bài toán cũ của chúng ta?
 
 Với mỗi số bên trái, sẽ có một số vị trí bên phải (không quá $$2\times D$$) có thể ghép được với số đó, thì ta xem các vị trí này là thành một "đoạn". Ví dụ vẫn với cách phân dãy $$a$$ trên, thì mảng gồm các đoạn là: 
 
-$$[5 | 7, 8 | 5, 8 | 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
+$$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
 
 Tới đây, việc chọn các cặp số (1, 2), (5, 6) và (3, 4) từ dãy $$a$$ (ứng với vị trí 5, 7, 8 ở bên phải) cũng ứng với  dãy con tăng ở mảng trên và thoả điều kiện mỗi đoạn chỉ được chọn nhiều nhất 1 số. 
 
 Vậy làm sao để giải quyết bài toán tìm dãy con tăng của mảng có nhiều đoạn, mà mỗi đoạn không được chọn nhiều số? Liệu với thuật toán tìm dãy con tăng mà ta thường dùng, có cách nào để đảm bảo việc mỗi đoạn chỉ chọn nhiều nhất 1 số hay không? Câu trả lời là có, và cách làm là: ở mỗi đoạn, ta sắp xếp các phần tử trong đoạn **giảm dần**, sau đó chỉ cần áp dụng thuật toán tìm dãy con tăng cơ bản là được.
 
-Ví dụ: thay vì ta lưu mảng là $$[5 | 7, 8 | 5, 8 | 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 | 8, 7 | 8, 5 | 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
+Ví dụ: thay vì ta lưu mảng là $$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 \,|\, 8, 7 \,|\, 8, 5 \,|\, 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
 
 Tại sao cái này đúng? Bởi vì ta đang tìm dãy con **tăng**, khi mà mỗi đoạn ta sắp xếp giảm dần thì rõ ràng không thể chọn 2 phần tử của 1 đoạn được vì nó sẽ tạo thành dãy **giảm**. 
 
@@ -140,7 +140,7 @@ gọi DFS(a);
 
 Tuy vậy, vẫn có cách tính số đỉnh quan trọng trong $$O(1)):
 
-**số đỉnh quan trọng** $= \frac{dist(a, b) + dist(b, c) + dist(a, c)}{2}$
+**số đỉnh quan trọng** $$= \frac{dist(a, b) + dist(b, c) + dist(a, c)}{2}$$
 
 #### Subtask 3: $$n \le 100, k = 4$$. 
 
@@ -323,7 +323,7 @@ Tới đây, ta không chỉ tính 1 kết quả cho $$L$$ nữa, mà ta cần t
 
 Ở subtask 3, ta được làm quen với bao hàm loại trừ. Ở subtask 4, ta phải dùng DP SOS. Từ 3 và 4 suy ra, ta cần làm bao hàm loại trừ tối ưu bằng DP SOS ở sub 5 = ))). 
 
-Bước cải tiến này tập trung vào bước 3 của thuật toán, ta làm như sau: sau khi tính được mảng $f$ ở bước 2, ta thân thêm hệ số 1/-1 vào f[i]. Nếu $$i$$ có lẻ bit thì ta nhân 1, nếu $$i$$ có chẵn bit 1 thì ta nhân $$-1$$. 
+Bước cải tiến này tập trung vào bước 3 của thuật toán, ta làm như sau: sau khi tính được mảng $$f$$ ở bước 2, ta thân thêm hệ số 1/-1 vào f[i]. Nếu $$i$$ có lẻ bit thì ta nhân 1, nếu $$i$$ có chẵn bit 1 thì ta nhân $$-1$$. 
 
 Sau đó tính DP SOS của mảng $$f$$, tạm gọi mảng được tính là $$g$$. Lúc này, $$|g[i]|$$ đúng bằng số lượng tập con có $$k$$ phần tử có tổng or đúng bằng $$i$$.
 
@@ -339,3 +339,5 @@ Tóm lại, ta có các bước sau:
 ## Nhận xét ngày 1:
 
 Mình thấy đề rất hay, để lấy 50% điểm của ngày 1 là không khó. Tuy nhiên, để AC bất kì bài nào trong đề đều yêu cầu một lượng kiến thức tốt cùng với thật sự hiểu những gì mình đã học, phải có tư duy mở rộng vấn đề. Ví dụ bài 1 thì có yêu cầu chuyển từ LCS -> LIS. Bài 2 là Knapsack on tree nhưng cũng không quá cơ bản. Bài 3 thì yêu cầu hiểu rõ DP SOS có thể làm được gì. Để AC được cả 3 bài thì đúng là yêu cầu một lượng kiến thức rất khủng. Đề cũng đánh vào tư duy nhiều hơn là code, mình thấy cả 3 bài nếu code thuật chuẩn thì tương đối là dễ code. 
+
+Mình rất thích đề này, nhưng khả năng cao là vào thi mình sẽ bị đề này đập tơi tả :'(. 
