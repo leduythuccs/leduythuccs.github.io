@@ -138,7 +138,7 @@ bool DFS(u):
 gọi DFS(a);
 ```
 
-Tuy vậy, vẫn có cách tính số đỉnh quan trọng trong $$O(1)):
+Tuy vậy, vẫn có cách tính số đỉnh quan trọng trong $$O(1)$$:
 
 **số đỉnh quan trọng** $$= \frac{dist(a, b) + dist(b, c) + dist(a, c)}{2}$$
 
@@ -206,7 +206,7 @@ Trên thực tế, khi cài đặt ta có thể chỉ dùng mảng 2 chiều khi
 
 Để đánh giá độ phức tạp của thuật toán này, nếu chỉ nhìn vào các vòng for mà đánh giá thì độ phức tạp của nó sẽ là $$O(n^3 * K)$$ hoặc thậm chí là $$O(n^4 * K)$$. 
 
-Tuy nhiên, nếu cài đặt tối ưu, duyệt các trạng thái quy hoạch động một cách hợp lý thì độ phức tạp của toàn bộ thuật toán này chỉ là $$O(N^2 * K)$$. 
+Tuy nhiên, nếu cài đặt tối ưu, duyệt các trạng thái quy hoạch động một cách hợp lý thì độ phức tạp của toàn bộ thuật toán này chỉ là $$O(n^2 \times K)$$. 
 ![](/data/VOI2021/img4.png)
 (.O.)
 
@@ -323,7 +323,7 @@ Tới đây, ta không chỉ tính 1 kết quả cho $$L$$ nữa, mà ta cần t
 
 Ở subtask 3, ta được làm quen với bao hàm loại trừ. Ở subtask 4, ta phải dùng DP SOS. Từ 3 và 4 suy ra, ta cần làm bao hàm loại trừ tối ưu bằng DP SOS ở sub 5 = ))). 
 
-Bước cải tiến này tập trung vào bước 3 của thuật toán, ta làm như sau: sau khi tính được mảng $$f$$ ở bước 2, ta thân thêm hệ số 1/-1 vào f[i]. Nếu $$i$$ có lẻ bit thì ta nhân 1, nếu $$i$$ có chẵn bit 1 thì ta nhân $$-1$$. 
+Bước cải tiến này tập trung vào bước 3 của thuật toán, ta làm như sau: sau khi tính được mảng $$f$$ ở bước 2, ta thân thêm hệ số 1/-1 vào $$f[i]$$. Nếu $$i$$ có lẻ bit thì ta nhân 1, nếu $$i$$ có chẵn bit 1 thì ta nhân $$-1$$. 
 
 Sau đó tính DP SOS của mảng $$f$$, tạm gọi mảng được tính là $$g$$. Lúc này, $$\lvert g[i] \rvert$$ đúng bằng số lượng tập con có $$k$$ phần tử có tổng or đúng bằng $$i$$.
 
