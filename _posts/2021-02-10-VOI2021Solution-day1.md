@@ -61,7 +61,7 @@ Ta có thể thấy với mỗi $$i$$, chỉ có nhiều nhất $$2 * D$$ chỉ 
 
 Ta nhìn vào test này, với $$D=1$$
 
-Dãy $$a$$: $$[1, 5, 3, 7, 2, 8, 6, 4]$$. Giả sử ta phân dãy $$a$$ ra thành: $$[1, 5, 3, 7 | 2, 8, 6, 4]$$ thì:
+Dãy $$a$$: $$[1, 5, 3, 7, 2, 8, 6, 4]$$. Giả sử ta phân dãy $$a$$ ra thành: $$[1, 5, 3, 7 \mid 2, 8, 6, 4]$$ thì:
 
 - Số 1 có thể ghép được với số 2 (ở vị trí 5)
 - Số 5 có thể ghép được với số 6, 4 (ở vị trí 7, 8)
@@ -76,13 +76,13 @@ Bài toán này thì liên quan gì tới bài toán cũ của chúng ta?
 
 Với mỗi số bên trái, sẽ có một số vị trí bên phải (không quá $$2\times D$$) có thể ghép được với số đó, thì ta xem các vị trí này là thành một "đoạn". Ví dụ vẫn với cách phân dãy $$a$$ trên, thì mảng gồm các đoạn là: 
 
-$$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
+$$[5 \mid 7, 8 \mid 5, 8 \mid 6, 7]$$ (`|` biểu thị cho phân tách đoạn, lưu ý mảng này lưu vị trí của số trong mảng $$a$$ chứng không phải lưu giá trị). 
 
 Tới đây, việc chọn các cặp số (1, 2), (5, 6) và (3, 4) từ dãy $$a$$ (ứng với vị trí 5, 7, 8 ở bên phải) cũng ứng với  dãy con tăng ở mảng trên và thoả điều kiện mỗi đoạn chỉ được chọn nhiều nhất 1 số. 
 
 Vậy làm sao để giải quyết bài toán tìm dãy con tăng của mảng có nhiều đoạn, mà mỗi đoạn không được chọn nhiều số? Liệu với thuật toán tìm dãy con tăng mà ta thường dùng, có cách nào để đảm bảo việc mỗi đoạn chỉ chọn nhiều nhất 1 số hay không? Câu trả lời là có, và cách làm là: ở mỗi đoạn, ta sắp xếp các phần tử trong đoạn **giảm dần**, sau đó chỉ cần áp dụng thuật toán tìm dãy con tăng cơ bản là được.
 
-Ví dụ: thay vì ta lưu mảng là $$[5 \,|\, 7, 8 \,|\, 5, 8 \,|\, 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 \,|\, 8, 7 \,|\, 8, 5 \,|\, 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
+Ví dụ: thay vì ta lưu mảng là $$[5 \mid 7, 8 \mid 5, 8 \mid 6, 7]$$ thì ta sắp xếp từng đoạn giảm dần: $$[5 \mid 8, 7 \mid 8, 5 \mid 7, 6]$$, ta có thể bỏ luôn dấu phân cách: $$[5, 8, 7, 8, 5, 7, 6]$$. Sau đó áp dụng thuật toán tìm dãy con tăng trên mảng mới này. 
 
 Tại sao cái này đúng? Bởi vì ta đang tìm dãy con **tăng**, khi mà mỗi đoạn ta sắp xếp giảm dần thì rõ ràng không thể chọn 2 phần tử của 1 đoạn được vì nó sẽ tạo thành dãy **giảm**. 
 
@@ -245,7 +245,7 @@ Bài này mình thấy cài thuật AC còn dễ và ngắn hơn cài thuật tr
 
 Cho một dãy $$a$$ gồm $$n$$ phần tử. Đếm số cách chọn một dãy con $$b$$ của $$a$$ có $$K$$ phần tử sao cho tổng or của dãy con đó chia hết cho 3, và nằm trong đoạn từ $$L$$ tới $$R$$. Nói cách khác:
 
-- $$v = b[1] | b[2] | \dots | b[K]$$ 
+- $$v = b[1] \mid b[2] \mid \dots \mid b[K]$$ 
 - $$L \le v \le R$$
 - $$v \pmod 3 = 0$$
 
@@ -254,7 +254,7 @@ Cho một dãy $$a$$ gồm $$n$$ phần tử. Đếm số cách chọn một dã
 Nhận xét chung: điều kiện chia hết cho 3 chỉ để cho vui, nó không làm bài toán khó lên hay dễ đi, cho nên trong lời giải mình sẽ không bàn tới nó. 
 
 Trong lời giải mình có dùng 1 số thuật ngữ mà mình đặt ra để cho tiện nói, mình sẽ định nghĩa ở đây:
-- Nói số $$a$$ là tập con của số $$b$$ nếu $$b & a = a$$ (phép and), hay nói cách khác là mọi bit của $$a$$ đều xuất hiện trong $$b$$. Ta ký hiệu luôn $$a \subset b$$ nghĩa là $$a$$ là tập con của $$b$$. 
+- Nói số $$a$$ là tập con của số $$b$$ nếu $$b \And a = a$$ (phép and), hay nói cách khác là mọi bit của $$a$$ đều xuất hiện trong $$b$$. Ta ký hiệu luôn $$a \subset b$$ nghĩa là $$a$$ là tập con của $$b$$. 
 - $$nBit$$: số bit cần dùng để biểu diễn số $$a[i]$$ (khoảng 20 đối với giới hạn bài toán $$a[i] = 10^6$$)
 
 #### Subtask 1: $$n \le 20$$.
