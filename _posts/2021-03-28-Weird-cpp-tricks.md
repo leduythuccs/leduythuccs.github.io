@@ -1,7 +1,7 @@
 ---
 layout: post
 published: true
-title: 'Weid cpp tricks'
+title: 'Weird cpp tricks'
 date: '2021-03-28'
 tags:
   - CP
@@ -110,7 +110,7 @@ int main() {
 }
 ```
 
-Ở code này, đáng lưu ý nhất là dòng `cout << something, 0;`, cái này thì liên quan tới câu lệnh có dấu `,`. Với các khối lệnh có dấu `,` thì các lệnh được ngăn cácg bởi dấu `,` sẽ được thực hiện từ trái sang phải, và giá trị trả về của khối lệnh chính là **giá trị của lệnh cuối cùng**. Vì thế, với khối lệnh `cout << something, 0` thì lệnh `cout << something` sẽ được thực hiện trước, sau đó sẽ tới "lệnh" 0, và 0 chính là giá trị trả về của khối lệnh này, do đó return sẽ nhận giá trị 0.
+Ở code này, đáng lưu ý nhất là dòng `cout << something, 0;`, cái này thì liên quan tới câu lệnh có dấu `,`. Với các khối lệnh có dấu `,` thì các lệnh được ngăn cách bởi dấu `,` sẽ được thực hiện từ trái sang phải, và giá trị trả về của khối lệnh chính là **giá trị của lệnh cuối cùng**. Vì thế, với khối lệnh `cout << something, 0` thì lệnh `cout << something` sẽ được thực hiện trước, sau đó sẽ tới "lệnh" 0, và 0 chính là giá trị trả về của khối lệnh này, do đó return sẽ nhận giá trị 0.
 
 Trick trên cũng có thể dùng ở hàm return void, bằng cách ta ép kiểu ostream sang void:
 ```c++
