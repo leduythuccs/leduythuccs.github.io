@@ -49,12 +49,14 @@ Thay vì `min(a, min(b, c))` thì các bạn có thể dùng `min({a, b, c})`, c
 Giả sử bạn có 1 vector $$a$$ gồm các `pair<int, int>`, bạn muốn duyệt hết các phần tử trong vector này thì có 2 cách phổ biến:
 
 1. For bằng index:
+
 ```c++
   for (int i = 0; i < a.size(); ++i) {
     cout << a[i].first << ' ' << a[i].second << '\n';
   }
 ```
 2. Range-based for loop, cách này chỉ dùng được từ c++11 trở lên:
+
 ```c++
   for (auto p : a) {
     cout << p.first << ' ' << p.second << '\n';
