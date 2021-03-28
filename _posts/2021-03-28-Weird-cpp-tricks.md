@@ -8,6 +8,13 @@ tags:
 ---
 Blog này nhằm cung cấp một số tricks (thề mình không biết phải dịch chữ này ra như thế nào cho hợp lý) mà mình hay dùng khi code bằng C++ trong lập trình thi đấu. Lưu ý là các trick này đa số chỉ phù hợp trong lập trình thi đấu, nó giúp bạn tăng tốc độ code và vì thế có thể giảm tính đọc hiểu của code. Vì vậy hãy xem đây là tham khảo thôi nhé :3
 
+# Mục lục:
+  * [In mảng 2 chiều](#in-m-ng-2-chi-u)
+  * [Lấy min/max của nhiều số](#l-y-min-max-c-a-nhi-u-s-)
+  * [Structured binding](#structured-binding)
+  * [Cout & return](#cout---return)
+  * [Thoát nhiều vòng lặp lồng nhau](#tho-t-nhi-u-v-ng-l-p-l-ng-nhau)
+
 ## In mảng 2 chiều
 
 Giả sử bạn có mảng 2 chiều $$a$$ với kích thước $$n \times m$$, và bạn cần in nó ra theo format: $$n$$ dòng, mỗi dòng gồm $$m$$ số cách nhau 1 dấu cách.
